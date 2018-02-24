@@ -22,17 +22,17 @@
       replace: 'user_xattr,acl,barrier=1,errors=remount-ro,relatime 0'
       backup: yes
  
-  - configure "Download template smb.conf.j2 to /etc/samba/smb.conf"
+  - name:  "Download template smb.conf.j2 to /etc/samba/smb.conf"
     template:
       src: smb.conf.j2
       dest: /etc/samba/smb.conf
       backup: yes
    
   - name: "Joining domain: {{ smb_realm }}"
-    shell: net ads join -U {{ smb_user }}%{{ smb_password }}
+    shell: "net ads join -U {{ smb_username }}%{{ smb_password }}"
  
   - name: "Preseed Kerberos version 5"
-    raw: echo krb5-config krb5-config/default_realm string {{ smb_realm }} | sudo debconf-set-selections
+    raw: "echo krb5-config krb5-config/default_realm string {{ smb_realm }} | sudo debconf-set-selections"
     
   - name: "Install Kerberos"
     apt:
@@ -58,5 +58,5 @@
       line: 'group:          compat winbind'
       backup: yes
  
-  - name: "Set disk operator permisions for Domain Admins"
-    shell: "net rpc rights grant '{{ smb_workgroup }}\Domain Admins' SeDiskOperatorPrivilege -U{{ smb_user }}%{{ smb_password }}"
+#  - name: "Set disk operator permisions for Domain Admins"
+#    shell: "net rpc rights grant '{{ smb_workgroup }}\Domain Admins' SeDiskOperatorPrivilege -U{{ smb_username }}%{{ smb_password }}"
