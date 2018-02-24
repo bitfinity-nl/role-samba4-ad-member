@@ -1,0 +1,42 @@
+---
+  # Tasks: Samba4 member server (WIP)
+  #
+  # Author: Luc Rutten
+  # Version: 1.0
+  
+  - name: "Install dependencies" 
+    apt:
+      name: "{{ item }}"
+      update_cache: yes
+      state: present
+    with_items:
+      - acl
+      - samba
+      - smbclient
+      - ntp
+      
+  - name: "Edit Fstab"
+    raw: sed -i 's/errors=remount-ro 0       1/user_xattr,acl,barrier=1,errors=remount-ro,relatime 0 1/' /etc/fstab
+  
+  - configure "Download template smb.conf.j2 to /etc/samba/smb.conf"
+    template:
+      src: smb.conf.j2
+      dest: /etc/samba/smb.conf
+      backup: yes
+   
+  - name: "Joining domain: {{ smb_realm }}"
+    raw: net ads join -U {{ smb_user }}%{{ smb_password }}
+ 
+  - name: "Preseed Kerberos version 5"
+    raw: echo krb5-config krb5-config/default_realm string {{ smb_realm }} | sudo debconf-set-selections
+    
+  - name: "Install Kerberos"
+    apt:
+      name: "{{ item }}"
+      update_cache: yes
+      state: present
+    with_items:
+      - krb5-user
+      - winbind
+      - libnss-winbind
+      
