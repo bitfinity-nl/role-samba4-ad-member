@@ -3,8 +3,7 @@ Join Ubuntu to Active Directory
 
 ## Variable(s)
 
-smb_workgroup: TEST
-smb_realm: TEST.NET
-  
-smb_username: administrator
-smb_password: password
+'''smb_workgroup:''' TEST
+'''smb_realm:''' TEST.NET
+'''smb_username:''' administrator
+'''smb_password:''' password
