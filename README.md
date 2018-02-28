@@ -7,6 +7,8 @@ Join Ubuntu to Active Directory
 
 **smb_realm:** TEST.NET
 
+**smb_dns_servers:** 192.168.0.1 
+
 **smb_username:** administrator
 
 **smb_password:** password

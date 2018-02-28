@@ -1,30 +1,23 @@
 [global]
+workgroup = {{ smb_workgroup }}
+realm = {{ smb_realm }}
+netbios name = {{ ansible_hostname }}
+security = ADS
+#encrypt passwords = yes
+dns fowarder = {{ smb_dns_servers }}
 
-  # netbios name = Member1
-  workgroup = {{ smb_workgroup }}
-  security = ADS
-  realm = {{ smb_realm }}
-  encrypt passwords = yes
+idmap config * :backend = tdb
+idmap config *:range = 50000-1000000
+template homedir = /home/%D/%U
+template shell = /bin/bash
 
-  idmap config *:backend = tdb
-  idmap config *:range = 70001-80000
-  idmap config {{ smb_realm }}:backend = ad
-  idmap config {{ smb_realm }}:schema_mode = rfc2307
-  idmap config {{ smb_realm }}:range = 500-40000
+# winbind trusted domains only = no
+winbind use default domain = yes
+winbind offline logon = false
+winbind nss info = rfc2307
+winbind enum users  = yes
+winbind enum groups = yes
 
-  winbind nss info = rfc2307
-  winbind trusted domains only = no
-  winbind use default domain = yes
-  winbind enum users  = yes
-  winbind enum groups = yes
-
-  vfs objects = acl_xattr
-  map acl inherit = Yes
-  store dos attributes = Yes
-
-  ## Performance Tuning ##
-  socket options=SO_RCVBUF=131072 SO_SNDBUF=131072 IPTOS_LOWDELAY SO_KEEPALIVE TCP_NODELAY
-  min receivefile size = 16384
-  use sendfile = yes
-  aio read size = 32768
-  aio write size = 32768
+vfs objects = acl_xattr
+map acl inherit = Yes
+store dos attributes = Yes

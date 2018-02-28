@@ -1,0 +1,21 @@
+---
+  # Handlers: Samba4
+
+  - name: "restart_samba_services"
+    systemd:
+      name: "{{ item }}"
+      state: restarted
+      enabled: yes
+    with_items:
+      - smbd
+      - nmbd
+      - winbind
+
+  - name: "stop_samba_addc"
+    systemd:
+      name: samba-ad-dc
+      state: stopped 
+      enabled: no
+
+  - name: "join_domain"
+    shell: "net ads join -U {{ smb_username }}%{{ smb_password }}"
