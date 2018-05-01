@@ -8,8 +8,9 @@ galaxy_info:
   - name: Ubuntu
     versions:
     - xenial
+    - bionic
   galaxy_tags:
     - Samba4
-    - Active Directory
-    - Join Domain
+    - ActiveDirectory
+    - Domain
     - Windows
