@@ -10,6 +10,9 @@ galaxy_info:
     - xenial
     - bionic
   galaxy_tags:
+    - Ubuntu
+    - Bionic
+    - Xenial
     - Samba4
     - ActiveDirectory
     - Domain
