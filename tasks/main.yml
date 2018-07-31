@@ -39,6 +39,13 @@
       backup: yes
     notify:
       - restart_samba_services
+  
+  - name: "edit hosts file in order to be reachable from hostname"
+    lineinfile:
+      path: /etc/hosts
+      regexp: '127.0.1.1	NL-BEL-IGEL53'
+      line: "127.0.1.1	{{ ansible_hostname }}.vgg.local {{ ansible_hostname}}"
+      backup: yes
 
   - name: "Joining domain: {{ smb_realm }}"
     shell: "net ads join -U {{ smb_username }}%{{ smb_password }}"
@@ -63,7 +70,7 @@
       regexp: 'shadow:         compat'
       line: 'shadow:         compat winbind'
       backup: yes
-
+  
   - name: "Configure PAM Configuration"
     shell: DEBIAN_FRONTEND=noninteractive pam-auth-update
 
@@ -88,7 +95,7 @@
       group: root
       mode: 0440
       backup: yes
-
+  
 
 #  - name: "Set disk operator permisions for Domain Admins"
 #    shell: "net rpc rights grant '{{ smb_workgroup }}\Domain Admins' SeDiskOperatorPrivilege -U{{ smb_username }}%{{ smb_password }}"
