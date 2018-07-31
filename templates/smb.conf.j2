@@ -4,7 +4,7 @@ realm = {{ smb_realm }}
 netbios name = {{ ansible_hostname }}
 security = ADS
 #encrypt passwords = yes
-dns fowarder = {{ smb_dns_servers }}
+dns forwarder = {{ smb_dns_servers }}
 
 idmap config * :backend = tdb
 idmap config *:range = 50000-1000000
