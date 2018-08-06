@@ -43,8 +43,15 @@
   - name: "edit hosts file in order to be reachable from hostname"
     lineinfile:
       path: /etc/hosts
-      regexp: '127.0.1.1	NL-BEL-IGEL53'
+      regexp: "127.0.1.1	{{ ansible_hostname }}"
       line: "127.0.1.1	{{ ansible_hostname }}.vgg.local {{ ansible_hostname}}"
+      backup: yes
+
+  - name: "configure nsswitch to look for hosts file and then in configured DNS to resolve hostnames in domain"
+    lineinfile:
+      path: /etc/nsswitch.conf
+      regexp: "hosts:          files mdns4_minimal \\[NOTFOUND=return\\] dns"
+      line: 'hosts:          files dns wins'
       backup: yes
 
   - name: "Joining domain: {{ smb_realm }}"
