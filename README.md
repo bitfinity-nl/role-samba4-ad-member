@@ -30,4 +30,4 @@ the sources below, so I could write this Anisble role.
 
 - https://www.tecmint.com/join-ubuntu-to-active-directory-domain-member-samba-winbind/
 - https://community.centrify.com/t5/Centrify-Express/Ad-group-with-space-in-its-name-not-working/td-p/17661
-
+- https://wiki.samba.org/index.php/PAM_Offline_Authentication

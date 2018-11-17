@@ -38,6 +38,9 @@
       src: smb.conf.j2
       dest: /etc/samba/smb.conf
       backup: yes
+    with_items:
+      - { src: 'smb.conf.j2', dest: '/etc/samba/smb.conf' }
+      - { src: 'pam_winbind.conf.j2', dest: '/usr/share/doc/libpam-winbind/examples/pam_winbind/pam_winbind.conf' }
     notify:
       - restart_samba_services
   
