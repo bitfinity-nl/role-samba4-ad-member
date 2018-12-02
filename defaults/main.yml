@@ -7,7 +7,15 @@
   # WORKGROUP: <CAPITAL LETTERS>
   # REALM: < CAPITAL LETTERS>
   
-  
+  # -- Samba4 --
+  #
+  # Variable(s):
+  #   smb_workgroup: TEST             # Specify the short workgroup name.
+  #   smb_realm: TEST.NET             # Specify the realm.
+  #   smb_dns_servers: 192.168.0.1    # Specify the DNS servers.
+  #   smb_username: administrator     # Specify an administrative AD account. 
+  #   smb_password: password          # Specify the password from administrative AD account.
+  #
   smb_workgroup: TEST
   smb_realm: TEST.NET
   smb_dns_servers: 192.168.0.1  
