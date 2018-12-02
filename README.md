@@ -27,7 +27,7 @@ This is an example how to use the role:
 
       vars:
         # -- custom settings - ansible-role-samba4-ad-member --
-        smb_workgroup: example
+        smb_workgroup: EXAMPLE
         smb_realm: EXAMPLE.LOCAL
         smb_dns_servers: 192.168.0.1 192.168.0.2
         smb_username: adm_ansible
