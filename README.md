@@ -22,7 +22,7 @@ Example Playbook
 
 This is an example how to use the role:
 
-    - hosts: nl-bel-nuc08
+    - hosts: ad-members
       become: true
 
       vars:
