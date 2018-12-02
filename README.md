@@ -22,19 +22,19 @@ Example Playbook
 
 This is an example how to use the role:
 
-  - hosts: nl-bel-nuc08
-    become: true
+    - hosts: nl-bel-nuc08
+      become: true
 
-    vars:
-      # -- custom settings - ansible-role-samba4-ad-member --
-      smb_workgroup: example
-      smb_realm: EXAMPLE.LOCAL
-      smb_dns_servers: 192.168.0.1 192.168.0.2
-      smb_username: adm_ansible
-      smb_password: '{{ ad_admin_pass }}'
+      vars:
+        # -- custom settings - ansible-role-samba4-ad-member --
+        smb_workgroup: example
+        smb_realm: EXAMPLE.LOCAL
+        smb_dns_servers: 192.168.0.1 192.168.0.2
+        smb_username: adm_ansible
+        smb_password: '{{ ad_admin_pass }}'
 
-    roles:
-      - ansible-role-samba4-ad-member 
+      roles:
+        - ansible-role-samba4-ad-member 
 
 
 Source(s)
