@@ -1,30 +1,44 @@
-# ansible-role-samba4-ad-member
+ansible-role-samba4-ad-member
+=============================
 
 Join Ubuntu as a member server to Active Directory
 
 **Domain Admins have sudo rights**
 
-## Requirements
+Requirements
+------------
 
-- Ubuntu 16.04lts AMD64
+- Ubuntu 16.04lts / 18.04lts AMD64
 - Active Direcory (2008r2 and up)
 - Ansible-role-ntp-server
 
-## Default Variable(s)
-Variable(s) that you can use or override in your own playbook.
+Role Variables
+--------------
 
-**smb_workgroup:** TEST
+See default/main.yml for detailed information.
 
-**smb_realm:** TEST.NET
+Example Playbook
+----------------
 
-**smb_dns_servers:** 192.168.0.1 192.168.0.2
+This is an example how to use the role:
 
-**smb_username:** administrator
+  - hosts: nl-bel-nuc08
+    become: true
 
-**smb_password:** password
+    vars:
+      # -- custom settings - ansible-role-samba4-ad-member --
+      smb_workgroup: example
+      smb_realm: EXAMPLE.LOCAL
+      smb_dns_servers: 192.168.0.1 192.168.0.2
+      smb_username: adm_ansible
+      smb_password: '{{ ad_admin_pass }}'
+
+    roles:
+      - ansible-role-samba4-ad-member 
 
 
-## Source(s)
+Source(s)
+---------
 Thanks goes to all the authors and participants from 
 the sources below, so I could write this Anisble role.
 
