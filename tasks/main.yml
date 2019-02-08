@@ -35,8 +35,8 @@
  
   - name:  "Download template smb.conf.j2 to /etc/samba/smb.conf"
     template:
-      src: smb.conf.j2
-      dest: /etc/samba/smb.conf
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
       backup: yes
     with_items:
       - { src: 'smb.conf.j2', dest: '/etc/samba/smb.conf' }
