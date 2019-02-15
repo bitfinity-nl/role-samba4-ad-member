@@ -21,3 +21,29 @@
   smb_dns_servers: 192.168.0.1  
   smb_username: administrator
   smb_password: password
+
+  # -- resolv.conf.j2 (Experimental)--
+  #
+  # Variable(s):
+  #   smb_dns             : ''
+  #   smb_fallbackdns     : ''
+  #   smb_domains         : ''
+  #   smb_llmnr           : 'no'
+  #   smb_multicastdns    : 'no'
+  #   smb_dnssec          : 'no'
+  #   smb_cache           : 'yes'
+  #   smb_dnsstublistener : 'yes'
+  #
+  # Notes:
+  #   - https://ubuntuforums.org/showthread.php?t=2391351
+  #
+  #   Not working yet !!
+  #
+  smb_dns             : ''
+  smb_fallbackdns     : ''
+  smb_domains         : '{{ smb_realm }}'
+  smb_llmnr           : 'no'
+  smb_multicastdns    : 'no'
+  smb_dnssec          : 'no'
+  smb_cache           : 'yes'
+  smb_dnsstublistener : 'yes'

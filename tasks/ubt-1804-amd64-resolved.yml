@@ -1,0 +1,26 @@
+---
+  # Tasks: Samba4 member server
+  #
+  # Author: Luc Rutten
+  # File: tasks/ubt-1804-amd64-resolved.yml
+  # 
+  # Comment:
+  #   Fixing DNS resolving
+  #
+  #  Not working yet
+  #
+  - name: "edit hosts /etc/systemd/resolved.conf"
+    lineinfile:
+      path: /etc/hosts
+      regexp: "127.0.1.1	{{ ansible_hostname }}"
+      line: "127.0.1.1	{{ ansible_hostname }}.vgg.local {{ ansible_hostname}}"
+      backup: yes
+    with_items:
+      - { item.find: '#DNS=', item.replace: 'DNS=' }
+      - { item.find: '#FallbackDNS=', item.replace: 'FallbackDNS=' }
+      - { item.find: '#Domains=', item.replace: 'Domains=' }
+      - { item.find: '#LLMNR=no', item.replace: 'LLMNR=no' }
+      - { item.find: '#MulticastDNS=no', item.replace: 'MulticastDNS=no' }
+      - { item.find: '#DNSSEC=no', item.replace: 'DNSSEC=no' }
+      - { item.find: '#DNSStubListener=yes', item.replace: 'DNSStubListener=yes' }      
+      
