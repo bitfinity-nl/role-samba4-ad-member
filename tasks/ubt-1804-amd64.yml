@@ -12,10 +12,22 @@
   #   Fixing DNS resolving
   #
   
+  - name: "string"
+    set_fact:
+      nameservers: "{{ smb_dns_servers }}"
+
   - name: "Set DNS servers for /etc/systemd/resolved.conf"
     set_fact:
       smb_dns         : '{{ smb_dns_servers.split().0 }}'
-      smb_fallbackdns : "{{ smb_dns_servers.split.split().1 | default('{{ smb_dns_servers.split().0 }}') }}"
+      smb_fallbackdns : "{{ smb_dns_servers.split().1 | default('{{ smb_dns_servers.split().0 }}') }}"
+
+  - name: "Print primary DNS server"
+    debug:
+      msg: "{{ smb_dns }}"
+
+  - name: "Print Secondary DNS server"
+    debug:
+      msg: "{{ smb_fallbackdns }}"
 
   - name: "Configure name resolution for static ipaddress"
     template:
