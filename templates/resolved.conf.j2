@@ -12,11 +12,11 @@
 # See resolved.conf(5) for details
 
 [Resolve]
-#DNS=
-#FallbackDNS=
-#Domains=
-#LLMNR=no
-#MulticastDNS=no
-#DNSSEC=no
-#Cache=yes
-#DNSStubListener=yes
+DNS={{ smb_dns }}
+FallbackDNS= {{ smb_fallbackdns }}
+Domains={{ smb_domains }}
+LLMNR={{ smb_llmnr }}
+MulticastDNS={{ smb_multicastdns }}
+DNSSEC={{ smb_dnssec }}
+Cache={{ smb_cache }}
+DNSStubListener={{ smb_dnsstublistener }}

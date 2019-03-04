@@ -32,7 +32,7 @@ This is an example how to use the role:
         smb_dns_servers: 192.168.0.1 192.168.0.2
         smb_username: adm_ansible
         smb_password: '{{ ad_admin_pass }}'
-
+        
       roles:
         - ansible-role-samba4-ad-member 
 
