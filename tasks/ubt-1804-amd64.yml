@@ -1,131 +1,131 @@
 ---
-  # Title: ansible-role-samba4-ad-member
-  #
-  # Author: Luc Rutten
-  # File: tasks/ubt-1804-amd64.yml
-  #
-  # Description:
-  #   Samba is the standard Windows interoperability 
-  #   suite of programs for Linux and Unix.
-  # 
-  # Comment:
-  #   Fixing DNS resolving
-  #
+# Title: ansible-role-samba4-ad-member
+#
+# Author: Bitfinity-NL
+# File: tasks/ubt-1804-amd64.yml
+#
+# Description:
+#   Samba is the standard Windows interoperability 
+#   suite of programs for Linux and Unix.
+# 
+# Comment:
+#   Fixing DNS resolving
+#
   
-  - name: "string"
-    set_fact:
-      nameservers: "{{ smb_dns_servers }}"
+- name: "string"
+  set_fact:
+    nameservers: "{{ smb_dns_servers }}"
 
-  - name: "Set DNS servers for /etc/systemd/resolved.conf"
-    set_fact:
-      smb_dns         : '{{ smb_dns_servers.split().0 }}'
-      smb_fallbackdns : "{{ smb_dns_servers.split().1 | default('{{ smb_dns_servers.split().0 }}') }}"
+- name: "Set DNS servers for /etc/systemd/resolved.conf"
+  set_fact:
+    smb_dns         : '{{ smb_dns_servers.split().0 }}'
+    smb_fallbackdns : "{{ smb_dns_servers.split().1 | default('{{ smb_dns_servers.split().0 }}') }}"
 
-  - name: "Print primary DNS server"
-    debug:
-      msg: "{{ smb_dns }}"
+- name: "Print primary DNS server"
+  debug:
+    msg: "{{ smb_dns }}"
 
-  - name: "Print Secondary DNS server"
-    debug:
-      msg: "{{ smb_fallbackdns }}"
+- name: "Print Secondary DNS server"
+  debug:
+    msg: "{{ smb_fallbackdns }}"
 
-  - name: "Configure name resolution for static ipaddress"
-    template:
-      src: resolved.conf.j2
-      dest: /etc/systemd/resolved.conf
+- name: "Configure name resolution for static ipaddress"
+  template:
+    src: resolved.conf.j2
+    dest: /etc/systemd/resolved.conf
 
-  - name: "Preseed Kerberos version 5"
-    raw: "echo krb5-config krb5-config/default_realm string {{ smb_realm }} | sudo debconf-set-selections"
+- name: "Preseed Kerberos version 5"
+  raw: "echo krb5-config krb5-config/default_realm string {{ smb_realm }} | sudo debconf-set-selections"
 
-  - name: "Preseed PAM Configuration"
-    raw: "echo libpam-runtime  libpam-runtime/profiles multiselect     unix, winbind, systemd, mkhomedir | sudo debconf-set-selections"
+- name: "Preseed PAM Configuration"
+  raw: "echo libpam-runtime  libpam-runtime/profiles multiselect     unix, winbind, systemd, mkhomedir | sudo debconf-set-selections"
  
-  - name: "Install dependencies" 
-    apt:
-      name: "{{ packages }}"
-      update_cache: yes
-      state: present
-    vars:
-      packages:
-      - acl
-      - samba
-      - smbclient
-      - krb5-config
-      - krb5-user
-      - winbind
-      - libpam-winbind
-      - libnss-winbind
+- name: "Install dependencies" 
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+    state: present
+  vars:
+    packages:
+    - acl
+    - samba
+    - smbclient
+    - krb5-config
+    - krb5-user
+    - winbind
+    - libpam-winbind
+    - libnss-winbind
       
-  - name: "Edit Fstab"
-    replace:
-      path: /etc/fstab
-      regexp: 'errors=remount-ro 0'
-      replace: 'user_xattr,acl,barrier=1,errors=remount-ro,relatime 0'
-      backup: yes
+- name: "Edit Fstab"
+  replace:
+    path: /etc/fstab
+    regexp: 'errors=remount-ro 0'
+    replace: 'user_xattr,acl,barrier=1,errors=remount-ro,relatime 0'
+    backup: yes
  
-  - name:  "Download template smb.conf.j2 to /etc/samba/smb.conf"
-    template:
-      src: "{{ item.src }}"
-      dest: "{{ item.dest }}"
-      backup: yes
-    with_items:
-      - { src: 'smb.conf.j2', dest: '/etc/samba/smb.conf' }
-      - { src: 'pam_winbind.conf.j2', dest: '/usr/share/doc/libpam-winbind/examples/pam_winbind/pam_winbind.conf' }
-    notify:
-      - restart_samba_services
+- name:  "Download template smb.conf.j2 to /etc/samba/smb.conf"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    backup: yes
+  with_items:
+    - { src: 'smb.conf.j2', dest: '/etc/samba/smb.conf' }
+    - { src: 'pam_winbind.conf.j2', dest: '/usr/share/doc/libpam-winbind/examples/pam_winbind/pam_winbind.conf' }
+  notify:
+    - restart_samba_services
   
-  - name: "edit hosts file in order to be reachable from hostname"
-    lineinfile:
-      path: /etc/hosts
-      regexp: "127.0.1.1	{{ ansible_hostname }}"
-      line: "127.0.1.1	{{ ansible_hostname }}.vgg.local {{ ansible_hostname}}"
-      backup: yes
+- name: "edit hosts file in order to be reachable from hostname"
+  lineinfile:
+    path: /etc/hosts
+    regexp: "127.0.1.1	{{ ansible_hostname }}"
+    line: "127.0.1.1	{{ ansible_hostname }}.vgg.local {{ ansible_hostname}}"
+    backup: yes
 
-  - name: "Joining domain: {{ smb_realm }}"
-    shell: "net ads join -U {{ smb_username }}%{{ smb_password }}"
+- name: "Joining domain: {{ smb_realm }}"
+  shell: "net ads join -U {{ smb_username }}%{{ smb_password }}"
    
-  - name: "Configure nsswitch for winbind - passwd"
-    lineinfile:
-      path: /etc/nsswitch.conf
-      regexp: 'passwd:         compat'
-      line: 'passwd:         compat winbind'
-      backup: yes
+- name: "Configure nsswitch for winbind - passwd"
+  lineinfile:
+    path: /etc/nsswitch.conf
+    regexp: 'passwd:         compat'
+    line: 'passwd:         compat winbind'
+    backup: yes
 
-  - name: "Configure nsswitch for winbind - group"
-    lineinfile:
-      path: /etc/nsswitch.conf
-      regexp: 'group:          compat'
-      line: 'group:          compat winbind'
-      backup: yes
+- name: "Configure nsswitch for winbind - group"
+  lineinfile:
+    path: /etc/nsswitch.conf
+    regexp: 'group:          compat'
+    line: 'group:          compat winbind'
+    backup: yes
 
-  - name: "Configure nsswitch for winbind - shadow"
-    lineinfile:
-      path: /etc/nsswitch.conf
-      regexp: 'shadow:         compat'
-      line: 'shadow:         compat winbind'
-      backup: yes
+- name: "Configure nsswitch for winbind - shadow"
+  lineinfile:
+    path: /etc/nsswitch.conf
+    regexp: 'shadow:         compat'
+    line: 'shadow:         compat winbind'
+    backup: yes
   
-  - name: "Configure PAM Configuration"
-    shell: DEBIAN_FRONTEND=noninteractive pam-auth-update
+- name: "Configure PAM Configuration"
+  shell: DEBIAN_FRONTEND=noninteractive pam-auth-update
 
-  - name: "Configure PAM - /etc/pam.d/common-account"
-    lineinfile:
-      path: /etc/pam.d/common-account
-      line: 'session    required    pam_mkhomedir.so    skel=/etc/skel/    umask=0022'
-      backup: yes
+- name: "Configure PAM - /etc/pam.d/common-account"
+  lineinfile:
+    path: /etc/pam.d/common-account
+    line: 'session    required    pam_mkhomedir.so    skel=/etc/skel/    umask=0022'
+    backup: yes
 
-  - name: "Configure PAM - /etc/pam.d/common-password"
-    replace:
-      path: /etc/pam.d/common-password
-      regexp: ' use_authtok'
-      replace: ''
-      backup: yes 
+- name: "Configure PAM - /etc/pam.d/common-password"
+  replace:
+    path: /etc/pam.d/common-password
+    regexp: ' use_authtok'
+    replace: ''
+    backup: yes 
 
-  - name:  "Download template domain-admins.j2 to /etc/sudoers.d/domain-admins"
-    template:
-      src: domain-admins.j2
-      dest: /etc/sudoers.d/domain-admins
-      owner: root
-      group: root
-      mode: 0440
-      backup: yes
+- name:  "Download template domain-admins.j2 to /etc/sudoers.d/domain-admins"
+  template:
+    src: domain-admins.j2
+    dest: /etc/sudoers.d/domain-admins
+    owner: root
+    group: root
+    mode: 0440
+    backup: yes

@@ -1,49 +1,55 @@
 ---
-  # Title: ansible-role-samba4-ad-member
-  #
-  # Author: Luc Rutten
-  # File: defaults/main.yml
-  #
-  # Description:
-  #   Samba is the standard Windows interoperability 
-  #   suite of programs for Linux and Unix.
-  #
-  # WORKGROUP: <CAPITAL LETTERS>
-  # REALM: < CAPITAL LETTERS>
+# Title: ansible-role-samba4-ad-member
+#
+# Author: bitfinity-nl
+# File: defaults/main.yml
+#
+# Description:
+#   Samba is the standard Windows interoperability 
+#   suite of programs for Linux and Unix.
+#
+# WORKGROUP: <CAPITAL LETTERS>
+# REALM: < CAPITAL LETTERS>
 
-  # -- Samba4 --
-  #
-  # Variable(s):
-  #   smb_workgroup: TEST                     # Specify the short workgroup name.
-  #   smb_realm: TEST.NET                     # Specify the realm.
-  #   smb_dns_servers: 192.168.0.1            # Specify the DNS servers.
-  #   smb_username: administrator             # Specify an administrative AD account. 
-  #   smb_password: password                  # Specify the password from administrative AD account.
-  #
-  smb_workgroup       : 'TEST'
-  smb_realm           : 'TEST.NET'
-  smb_dns_servers     : '192.168.0.1'  
-  smb_username        : 'administrator'
-  smb_password        : 'password'
 
-  # -- resolv.conf.j2 --
-  #
-  # Variable(s):
-  #   smb_dns             : '192.168.0.1'     # Wil be extracted from variable {{ smb_dns_servers }}
-  #   smb_fallbackdns     : '192.168.0.2'     # Wil be extracted from variable {{ smb_dns_servers }}.
-  #   smb_domains         : 'EXAMPLE.LOCAL'   # Specify the realm.
-  #   smb_llmnr           : 'no'              # Default=no
-  #   smb_multicastdns    : 'no'              # Default=no
-  #   smb_dnssec          : 'no'              # Default=no
-  #   smb_cache           : 'yes'             # Default=yes
-  #   smb_dnsstublistener : 'yes'             # Defailt=yes
-  #
-  # Notes:
-  #   - https://ubuntuforums.org/showthread.php?t=2391351
-  #
-  smb_domains         : '{{ smb_realm }}'
-  smb_llmnr           : 'no'
-  smb_multicastdns    : 'no'
-  smb_dnssec          : 'no'
-  smb_cache           : 'yes'
-  smb_dnsstublistener : 'yes'
+# -- Samba4 --
+#
+# Variable(s):
+#   smb_workgroup: TEST                     # Specify the short workgroup name.
+#   smb_realm: TEST.NET                     # Specify the realm.
+#   smb_dns_servers: 192.168.0.1            # Specify the DNS servers.
+#   smb_username: administrator             # Specify an administrative AD account. 
+#   smb_password: password                  # Specify the password from administrative AD account.
+#
+#
+# Comment: 
+#   Change variable(s) here, in your playbook or set them in your groupvars
+#
+smb_workgroup             : '{{ def_ad_workgroup }}' 
+smb_realm                 : '{{ def_ad_realm }}'
+smb_dns_servers           : '{{ def_ad_dns }}'
+smb_username              : '{{ def_ad_admin }}'
+smb_password              : '{{ def_ad_pass }}'
+
+
+# -- resolv.conf.j2 --
+#
+# Variable(s):
+#   smb_dns             : '192.168.0.1'     # Wil be extracted from variable {{ smb_dns_servers }}
+#   smb_fallbackdns     : '192.168.0.2'     # Wil be extracted from variable {{ smb_dns_servers }}.
+#   smb_domains         : 'EXAMPLE.LOCAL'   # Specify the realm.
+#   smb_llmnr           : 'no'              # Default=no
+#   smb_multicastdns    : 'no'              # Default=no
+#   smb_dnssec          : 'no'              # Default=no
+#   smb_cache           : 'yes'             # Default=yes
+#   smb_dnsstublistener : 'yes'             # Defailt=yes
+#
+# Notes:
+#   - https://ubuntuforums.org/showthread.php?t=2391351
+#
+smb_domains         : '{{ smb_realm }}'
+smb_llmnr           : 'no'
+smb_multicastdns    : 'no'
+smb_dnssec          : 'no'
+smb_cache           : 'yes'
+smb_dnsstublistener : 'yes'

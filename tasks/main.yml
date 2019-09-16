@@ -1,22 +1,22 @@
 ---
-  # Title: ansible-role-samba4-ad-member
-  #
-  # Author: Luc Rutten
-  # File: tasks/ubt-1804-amd64.yml
-  #
-  # Description:
-  #   Samba is the standard Windows interoperability 
-  #   suite of programs for Linux and Unix.
-  #
+# Title: ansible-role-samba4-ad-member
+#
+# Author: Bitfinity-NL
+# File: tasks/ubt-1804-amd64.yml
+#
+# Description:
+#   Samba is the standard Windows interoperability 
+#   suite of programs for Linux and Unix.
+#
 
-  - name: "For OS: Ubuntu 16.04LTS, Arch: amd64"
-    import_tasks: ubt-1604-amd64.yml
-    when:
-      - ansible_distribution_version == "16.04"
-      - ansible_architecture == "x86_64"
+- name: "For OS: Ubuntu 16.04LTS, Arch: amd64"
+  import_tasks: ubt-1604-amd64.yml
+  when:
+    - ansible_distribution_version == "16.04"
+    - ansible_architecture == "x86_64"
 
-  - name: "IFor OS: Ubuntu 18.04LTS, Arch: amd64"
-    import_tasks: ubt-1804-amd64.yml
-    when:
-      - ansible_distribution_version == "18.04"
-      - ansible_architecture == "x86_64"
+- name: "IFor OS: Ubuntu 18.04LTS, Arch: amd64"
+  import_tasks: ubt-1804-amd64.yml
+  when:
+    - ansible_distribution_version == "18.04"
+    - ansible_architecture == "x86_64"
