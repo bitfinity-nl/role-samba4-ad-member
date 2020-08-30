@@ -78,7 +78,7 @@
   lineinfile:
     path: /etc/hosts
     regexp: "127.0.1.1	{{ ansible_hostname }}"
-    line: "127.0.1.1	{{ ansible_hostname }}.vgg.local {{ ansible_hostname}}"
+    line: "127.0.1.1	{{ ansible_hostname }}.{{ smb_realm|lower }} {{ ansible_hostname}}"
     backup: yes
 
 - name: "Joining domain: {{ smb_realm }}"
