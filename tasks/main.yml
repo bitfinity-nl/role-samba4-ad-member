@@ -9,6 +9,12 @@
 #   suite of programs for Linux and Unix.
 #
 
+- name: "IFor OS: Ubuntu 20.04LTS, Arch: amd64"
+  import_tasks: ubt-1804-amd64.yml
+  when:
+    - ansible_distribution_version == "20.04"
+    - ansible_architecture == "x86_64"
+    
 - name: "For OS: Ubuntu 16.04LTS, Arch: amd64"
   import_tasks: ubt-1604-amd64.yml
   when:
